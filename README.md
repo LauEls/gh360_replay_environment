@@ -4,7 +4,7 @@ A docker container that can replay rosbags recorded on the GH360 and exposes the
 # Setup Process
 * Install [Docker Desktop] (https://docs.docker.com/desktop/). Alternatively if you are using Linux you can only instal [Docker Engine](https://docs.docker.com/engine/install) as well.
 * Clone this repository, and in a terminal window navigate to it using the `cd PATH` command. **Note:** `PATH` has to be replaced with an actual path, e.g. `cd C:\Users\max\Desktop\gh360_replay_environment`.
-* Build the docker image:
+* Build the docker image: `docker build -t gh360/replay_environment .`
 
 # Usage Instructions
 * Run the docker container: `docker run -it --rm --name gh360_replay_container -p 9090:9090  gh360/replay_environment`
