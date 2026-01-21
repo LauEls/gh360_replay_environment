@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/eventemitter2@6.4.9/lib/eventemitter2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/roslib@1/build/roslib.min.js"></script>
+
+    <script>
+        // 1. Connection Setup
+        const ros = new ROSLIB.Ros({
+            url : 'ws://localhost:9090'
+        });
+
+        ros.on('connection', () => {
+            console.log('Connected to websocket server.');
+            document.getElementById('status').innerText = 'Connected';
+        });
+
+        ros.on('error', (error) => {
+            console.log('Error connecting to websocket server: ', error);
+            document.getElementById('status').innerText = 'Error';
+        });
+
+        ros.on('close', () => {
+            console.log('Connection to websocket server closed.');
+            document.getElementById('status').innerText = 'Closed';
+        });
+
+        // 2. Subscribing to a Topic
+        const jointStatesListener = new ROSLIB.Topic({
+            ros : ros,
+            name : '/gh360/joint_states',
+            messageType : 'sensor_msgs/msg/JointState' // Note the /msg/ for ROS 2
+        });
+
+        jointStatesListener.subscribe((message) => {
+            console.log('Received message: ' + message.position.toString());
+            document.getElementById('msg_joint_angles_display').innerText = message.position.toString();
+        });
+
+        const motorStatesListener = new ROSLIB.Topic({
+            ros : ros,
+            name : '/gh360/motor_states_sorted',
+            messageType : 'gh360_interfaces/msg/PortStatus'
+        });
+
+        motorStatesListener.subscribe((message) => {
+            console.log('Received motor states message: ' + message.motors.toString());
+            document.getElementById('msg_motor_position_display').innerText = message.motors[0].present_position.toString();
+        });
+
+        // 3. Publishing to a Topic
+        const talker = new ROSLIB.Topic({
+            ros : ros,
+            name : '/web_chatter',
+            messageType : 'std_msgs/msg/String'
+        });
+
+        function publishMessage() {
+            const str = new ROSLIB.Message({
+                data : "Hello from the Web Browser!"
+            });
+            talker.publish(str);
+        }
+    </script>
+</head>
+
+<body>
+    <h1>ROS 2 Web Interface</h1>
+    <p>Status: <span id="status">Connecting...</span></p>
+    <hr>
+    <h3>Subscriber</h3>
+    <p>Joint Angles: <b id="msg_joint_angles_display">N/A</b></p>
+    <hr>
+    <p>Motor 0 position: <b id="msg_motor_position_display">N/A</b></p>
+    <hr>
+    <h3>Publisher</h3>
+    <button onclick="publishMessage()">Send "Hello" to /web_chatter</button>
+</body>
+</html>

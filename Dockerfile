@@ -25,9 +25,10 @@ RUN apt update && apt install -y \
 RUN pip install pymongo
 
 # Set workspace
-WORKDIR /ros2_ws
-COPY src/ /ros2_ws/src/
-COPY rosbags/ /ros2_ws/rosbags/
+WORKDIR /root/ros2_ws
+COPY src/ src/
+COPY rosbags/ rosbags/
+COPY start_websocket_server.sh start_websocket_server.sh
 
 # RUN apt-get update && apt-get install -y dos2unix
 
@@ -41,3 +42,7 @@ RUN . /opt/ros/foxy/setup.sh && \
 
 # Default launch command
 ENTRYPOINT ["/bin/bash"]
+
+CMD ["./start_websocket_server.sh"]
+
+
