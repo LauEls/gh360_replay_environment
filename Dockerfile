@@ -29,6 +29,11 @@ WORKDIR /ros2_ws
 COPY src/ /ros2_ws/src/
 COPY rosbags/ /ros2_ws/rosbags/
 
+RUN apt-get update && apt-get install -y dos2unix
+
+# Recursively find and convert all .py files
+RUN find . -type f -name "*.py" -print0 | xargs -0 dos2unix
+
 # Build your code
 RUN . /opt/ros/foxy/setup.sh && \
     rosdep update && rosdep install --from-paths src --ignore-src -r -y && \
