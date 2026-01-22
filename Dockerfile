@@ -14,13 +14,6 @@ RUN apt update && apt install -y \
     ros-foxy-pybind11-vendor \
     && rm -rf /var/lib/apt/lists/*
 
-# RUN apt-get install ros-foxy-ros2bag \
-#     ros-foxy-rosbag2-converter-default-plugins \
-#     ros-foxy-rosbag2-storage-default-plugins
-
-# RUN apt-get install ros-foxy-test-msgs
-# RUN add-apt-repository universe && \
-#     apt-get update
 
 RUN pip install pymongo
 
@@ -29,11 +22,6 @@ WORKDIR /root/ros2_ws
 COPY src/ src/
 COPY rosbags/ rosbags/
 COPY start_websocket_server.sh start_websocket_server.sh
-
-# RUN apt-get update && apt-get install -y dos2unix
-
-# # Recursively find and convert all .py files
-# RUN find . -type f -name "*.py" -print0 | xargs -0 dos2unix
 
 # Build your code
 RUN . /opt/ros/foxy/setup.sh && \
