@@ -16,4 +16,4 @@ A docker container that can replay rosbags recorded on the GH360 and exposes the
   3. Source the ROS2 workspace: `source install/setup.bash`
   4. Play a rosbag: `ros2 bag play rosbags/BAGNAME`
     **Note:** `BAGNAME` has to be replaced by the name of a rosbag, e.g. `ros2 bag play rosbags/final_eval_rosbag_1757431284`
-* A simple example website that reads the joint angles and a motor position published by the rosbag can be viewed by opening joint_angle_sub.html in a browser on your host machine.
+* A simple example website that reads the joint angles and a motor position published by the rosbag can be viewed by opening examples/joint_angle_sub.html in a browser on your host machine.
